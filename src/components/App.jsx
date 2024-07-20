@@ -5,13 +5,15 @@ import SearchBar from "./SearchBar/SearchBar";
 import Loader from "./Loader/Loader";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
+import ImageModal from "./ImageModal/ImageModal";
 
 const App = () => {
   const [images, setImages] = useState([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
+  const [selectImage, setSelectImage] = useState(null);
 
   useEffect(() => {
     if (!query) return;
@@ -40,14 +42,29 @@ const App = () => {
     setPage((prev) => prev + 1);
   };
 
+  const handleImageClick = (image) => {
+    setSelectImage(image);
+  };
+
+  const closeModal = () => {
+    setSelectImage(null);
+  };
+
   return (
     <div>
       <SearchBar onSubmit={handleSearch} />
       {loading && <Loader />}
       {error && <ErrorMessage message={error} />}
-      <ImageGallery images={images} />
+      <ImageGallery images={images} onImageClick={handleImageClick} />
       {images.length > 0 && !loading && (
         <LoadMoreBtn onClick={handleLoadMore} />
+      )}
+      {selectImage && (
+        <ImageModal
+          isOpen={!!selectImage}
+          onClose={closeModal}
+          image={selectImage}
+        />
       )}
     </div>
   );
