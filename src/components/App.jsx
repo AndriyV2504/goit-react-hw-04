@@ -47,7 +47,7 @@ const App = () => {
   };
 
   const closeModal = () => {
-    setSelectImage(null);
+    setSelectImage(false);
   };
 
   return (
@@ -55,7 +55,7 @@ const App = () => {
       <SearchBar onSubmit={handleSearch} />
       {loading && <Loader />}
       {error && <ErrorMessage message={error} />}
-      <ImageGallery images={images} onImageClick={handleImageClick} />
+      <ImageGallery images={images} onClick={handleImageClick} />
       {images.length > 0 && !loading && (
         <LoadMoreBtn onClick={handleLoadMore} />
       )}
