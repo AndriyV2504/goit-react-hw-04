@@ -10,28 +10,37 @@ const App = () => {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
         setLoading(true);
         setError(false);
-        const response = await fetchPhotos(query);
-        setImages(response.results);
+        const response = await fetchPhotos(query, page);
+        setImages((prev) => [...prev, ...response.results]);
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-    fetchImages;
-  }, [query]);
+    fetchImages();
+  }, [query, page]);
+
+  const handleSearch = (query) => {
+    setQuery(query);
+    setImages([]);
+    setPage(1);
+  };
+
   return (
     <div>
-      <SearchBar onSubmit={setQuery} />
-      <ImageGallery images={images} />
+      <SearchBar onSubmit={handleSearch} />
       {loading && <Loader />}
       {error && <ErrorMessage message={error} />}
+      <ImageGallery images={images} />
+      <button onClick={() => setPage((prev) => prev + 1)}>Load more</button>
     </div>
   );
 };
