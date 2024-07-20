@@ -1,7 +1,18 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import ImageGallery from "./ImageGallery/ImageGallery";
+
 const App = () => {
+  const [images, setImages] = useState([]);
+  useEffect(() => {
+    axios
+      .get("https://api.unsplash.com/search/photos")
+      .then((res) => setImages(res.data.images))
+      .catch();
+  }, []);
   return (
     <div>
-      <h1>Hello!!</h1>
+      <ImageGallery images={images} />
     </div>
   );
 };
