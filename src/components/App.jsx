@@ -4,10 +4,11 @@ import fetchPhotos from "../services/api";
 
 const App = () => {
   const [images, setImages] = useState([]);
+
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetchPhotos();
+        const response = await fetchPhotos("query");
         setImages(response.images);
       } catch (error) {
         console.log(error);
