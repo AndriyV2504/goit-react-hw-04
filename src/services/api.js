@@ -9,7 +9,7 @@ const fetchPhotos = async (query, page = 1, perPage = 9) => {
     params: {
       query,
       page,
-      perPage: perPage,
+      per_Page: perPage,
     },
   });
   return response.data;
