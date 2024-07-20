@@ -10,14 +10,15 @@ const App = () => {
   const [images, setImages] = useState([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
+    if (!query) return;
+
     const fetchImages = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        setError(false);
         const response = await fetchPhotos(query, page);
         setImages((prev) => [...prev, ...response.results]);
       } catch (error) {

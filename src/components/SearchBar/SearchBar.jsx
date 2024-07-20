@@ -1,18 +1,28 @@
 import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import toast from "react-hot-toast";
 
 const SearchBar = ({ onSubmit }) => {
-  const initialValues = {
-    query: "",
-  };
+  const validationSchema = Yup.object().shape({
+    query: Yup.string().required("Please enter a search term"),
+  });
 
-  const handleSubmit = (values) => {
-    console.log(values);
-    onSubmit(values.query);
+  const handleSubmit = (values, { resetForm }) => {
+    if (!values.query.trim()) {
+      toast.error("Please enter a search term");
+      return;
+    }
+    onSubmit(values.query.trim());
+    resetForm();
   };
 
   return (
     <header>
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      <Formik
+        initialValues={{ query: "" }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
         <Form>
           <Field
             name="query"
