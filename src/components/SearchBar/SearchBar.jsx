@@ -1,4 +1,9 @@
-import { Formik, Form, Field } from "formik";
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage as FormikErrorMessage,
+} from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 
@@ -32,6 +37,7 @@ const SearchBar = ({ onSubmit }) => {
             placeholder="Search images and photos"
           />
           <button type="submit">Search</button>
+          <FormikErrorMessage name="query" component="div" />
         </Form>
       </Formik>
     </header>
