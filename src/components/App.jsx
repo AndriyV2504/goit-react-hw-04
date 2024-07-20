@@ -5,10 +5,17 @@ import ImageGallery from "./ImageGallery/ImageGallery";
 const App = () => {
   const [images, setImages] = useState([]);
   useEffect(() => {
-    axios
-      .get("https://api.unsplash.com/search/photos")
-      .then((res) => setImages(res.data.images))
-      .catch();
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.unsplash.com/search/photos"
+        );
+        setImages(response.data.images);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchImages;
   }, []);
   return (
     <div>
