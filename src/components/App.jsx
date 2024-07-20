@@ -4,6 +4,7 @@ import fetchPhotos from "../services/api";
 import SearchBar from "./SearchBar/SearchBar";
 import Loader from "./Loader/Loader";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
+import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -34,13 +35,19 @@ const App = () => {
     setPage(1);
   };
 
+  const handleLoadMore = () => {
+    setPage((prev) => prev + 1);
+  };
+
   return (
     <div>
       <SearchBar onSubmit={handleSearch} />
       {loading && <Loader />}
       {error && <ErrorMessage message={error} />}
       <ImageGallery images={images} />
-      <button onClick={() => setPage((prev) => prev + 1)}>Load more</button>
+      {images.length > 0 && !loading && (
+        <LoadMoreBtn onClick={handleLoadMore} />
+      )}
     </div>
   );
 };
