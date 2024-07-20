@@ -3,6 +3,7 @@ import ImageGallery from "./ImageGallery/ImageGallery";
 import fetchPhotos from "../services/api";
 import SearchBar from "./SearchBar/SearchBar";
 import Loader from "./Loader/Loader";
+import ErrorMessage from "./ErrorMessage/ErrorMessage";
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -18,8 +19,7 @@ const App = () => {
         const response = await fetchPhotos(query);
         setImages(response.results);
       } catch (error) {
-        console.log(error);
-        setError(true);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -31,7 +31,7 @@ const App = () => {
       <SearchBar onSubmit={setQuery} />
       <ImageGallery images={images} />
       {loading && <Loader />}
-      {error && <h2>ERROR!!!</h2>}
+      {error && <ErrorMessage message={error} />}
     </div>
   );
 };
