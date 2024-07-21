@@ -60,7 +60,7 @@ const App = () => {
   return (
     <div>
       <SearchBar onSubmit={handleSearch} />
-      <Toaster position="top-left" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
       {error && <ErrorMessage message={error} />}
       <ImageGallery images={images} onImageClick={handleImageClick} />
       {loading && <Loader />}
