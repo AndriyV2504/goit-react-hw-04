@@ -24,7 +24,7 @@ const App = () => {
 
   const closeModal = () => {
     setSelectImage("");
-    isModalOpen(false);
+    setIsModalOpen(false);
   };
 
   useEffect(() => {
