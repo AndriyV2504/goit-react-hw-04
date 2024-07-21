@@ -6,6 +6,7 @@ import Loader from "./Loader/Loader";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./ImageModal/ImageModal";
+import { Toaster, toast } from "react-hot-toast";
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -17,14 +18,14 @@ const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!query === "") return;
+    if (!query) return;
 
     const fetchImages = async () => {
       setLoading(true);
       setError(null);
 
       try {
-        const response = await fetchPhotos(query, page, 12);
+        const response = await fetchPhotos(query, page, 10);
         setImages((prev) => [...prev, ...response.results]);
       } catch (error) {
         setError("Failed to fetch images");
@@ -71,6 +72,7 @@ const App = () => {
           image={selectImage}
         />
       )}
+      <Toaster position="top-left" />
     </div>
   );
 };
