@@ -39,7 +39,7 @@ const App = () => {
         const response = await fetchPhotos(query, page, 8);
         setImages((prev) => [...prev, ...response.results]);
       } catch (error) {
-        setError(true);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
