@@ -1,5 +1,12 @@
-.item {
-    max-width: 100%;
-    width: 360px;
-    height: 250px;
+.card {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.image {
+    display: block;
+    width: 100%;
+    height: auto;
+    list-style: none;
 }

@@ -6,4 +6,5 @@
     overflow: hidden;
     column-gap: 24px;
     row-gap: 16px;
+    list-style: none;
 }
