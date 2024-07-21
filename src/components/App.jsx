@@ -6,29 +6,40 @@ import Loader from "./Loader/Loader";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./ImageModal/ImageModal";
-import { Toaster, toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const [images, setImages] = useState([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
-  const [selectImage, setSelectImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectImage, setSelectImage] = useState(null);
+
+  const handleImageClick = (image) => {
+    setSelectImage(image);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectImage("");
+    isModalOpen(false);
+  };
 
   useEffect(() => {
-    if (!query) return;
-
     const fetchImages = async () => {
-      setLoading(true);
-      setError(null);
+      if (!query) {
+        return;
+      }
 
       try {
-        const response = await fetchPhotos(query, page, 10);
+        setLoading(true);
+        setError(false);
+        const response = await fetchPhotos(query, page, 8);
         setImages((prev) => [...prev, ...response.results]);
       } catch (error) {
-        setError("Failed to fetch images");
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -46,22 +57,13 @@ const App = () => {
     setPage((prev) => prev + 1);
   };
 
-  const openModal = (image) => {
-    setSelectImage(image);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setSelectImage(null);
-    setIsModalOpen(false);
-  };
-
   return (
     <div>
       <SearchBar onSubmit={handleSearch} />
-      {loading && <Loader />}
+      <Toaster position="top-left" reverseOrder={false} />
       {error && <ErrorMessage message={error} />}
-      <ImageGallery images={images} onImageClick={openModal} />
+      <ImageGallery images={images} onImageClick={handleImageClick} />
+      {loading && <Loader />}
       {images.length > 0 && !loading && (
         <LoadMoreBtn onClick={handleLoadMore} />
       )}
@@ -72,7 +74,6 @@ const App = () => {
           image={selectImage}
         />
       )}
-      <Toaster position="top-left" />
     </div>
   );
 };

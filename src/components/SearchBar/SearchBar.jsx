@@ -2,18 +2,20 @@ import { Formik, Form, Field } from "formik";
 import toast from "react-hot-toast";
 
 const SearchBar = ({ onSubmit }) => {
-  const handleSubmit = (values, { resetForm }) => {
-    if (values.query.trim() === "") {
+  const initialValues = { query: "" };
+
+  const handleSubmit = (values, actions) => {
+    if (!values.query.trim()) {
       toast.error("Please enter a search term");
       return;
     }
     onSubmit(values.query);
-    resetForm();
+    actions.resetForm();
   };
 
   return (
     <header>
-      <Formik initialValues={{ query: "" }} onSubmit={handleSubmit}>
+      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         <Form>
           <Field
             name="query"
