@@ -14,17 +14,20 @@ const App = () => {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [selectImage, setSelectImage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!query) return;
+    if (!query === "") return;
 
     const fetchImages = async () => {
       setLoading(true);
+      setError(null);
+
       try {
-        const response = await fetchPhotos(query, page);
+        const response = await fetchPhotos(query, page, 12);
         setImages((prev) => [...prev, ...response.results]);
       } catch (error) {
-        setError(error.message);
+        setError("Failed to fetch images");
       } finally {
         setLoading(false);
       }
@@ -42,12 +45,14 @@ const App = () => {
     setPage((prev) => prev + 1);
   };
 
-  const handleImageClick = (image) => {
+  const openModal = (image) => {
     setSelectImage(image);
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setSelectImage(false);
+    setSelectImage(null);
+    setIsModalOpen(false);
   };
 
   return (
@@ -55,14 +60,14 @@ const App = () => {
       <SearchBar onSubmit={handleSearch} />
       {loading && <Loader />}
       {error && <ErrorMessage message={error} />}
-      <ImageGallery images={images} onClick={handleImageClick} />
+      <ImageGallery images={images} onImageClick={openModal} />
       {images.length > 0 && !loading && (
         <LoadMoreBtn onClick={handleLoadMore} />
       )}
       {selectImage && (
         <ImageModal
-          isOpen={!!selectImage}
-          onClose={closeModal}
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
           image={selectImage}
         />
       )}

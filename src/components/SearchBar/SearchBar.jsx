@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 
 const SearchBar = ({ onSubmit }) => {
   const handleSubmit = (values, { resetForm }) => {
-    if (!values.query.trim() === "") {
+    if (values.query.trim() === "") {
       toast.error("Please enter a search term");
       return;
     }

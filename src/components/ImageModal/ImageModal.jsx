@@ -2,12 +2,10 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-const ImageModal = ({ isOpen, onClose, image }) => {
+const ImageModal = ({ isOpen, onRequestClose, image }) => {
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose} contentLabel="Image Modal">
-      <button type="button" onClick={onClose}>
-        close
-      </button>
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
+      <button onClick={onRequestClose}>Close</button>
       {image && (
         <div>
           <img src={image.urls.regular} alt={image.alt_description} />
